@@ -45,7 +45,7 @@ El conjunto de datos incluye información clave, como números de factura, ident
 
 - **shopping_mall**: Variable de tipo cadena que indica el nombre del centro comercial donde se realizó la transacción.
 
-
+La **base de datos** se puede descargar desde la **Actividad 1**, la cual encontrarás al hacer clic en la pestaña de *Actividades* en la plataforma Brightspace. Allí también podrás acceder a la rúbrica de evaluación de la actividad mencionada.
 
 </br></br>
 <h2>Requisitos del informe</h2>
