@@ -1,0 +1,155 @@
+---
+title: <span style="color:#686868"> **Análisis de la Cesta de la Compra en  Datos del Comercio Minorista**</span>
+author: "Métodos y Simulación Estadística"
+output:
+  html_document:
+    toc: no
+    toc_depth: 2
+    toc_float: yes
+    code_folding: hide
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+</br></br>
+<h2>Base de datos</h2>
+
+La base de datos reúne información seleccionada aleatoriamente sobre actividades de compra en 10 centros comerciales distintos durante el período comprendido entre 2021 y 2023. Los datos corresponden a diversos grupos etarios y géneros, con el objetivo de ofrecer una visión integral sobre los hábitos de consumo en Estambul.
+</br>
+
+El conjunto de datos incluye información clave, como números de factura, identificadores de clientes, edades, géneros, métodos de pago, categorías de productos, cantidades, precios, fechas de compra y ubicaciones de los centros comerciales.
+
+</br>
+<h3>Información sobre las variables</h3>
+
+- **invoice_no**: Número de factura. Variable nominal. Es una combinación de la letra 'I' y un número entero de 6 dígitos asignado de manera única a cada operación.
+
+- **customer_id**: Número de cliente. Variable nominal. Es una combinación de la letra 'C' y un número entero de 6 dígitos asignado de manera única a cada operación.
+
+- **gender**: Variable de tipo cadena que indica el género del cliente.
+
+- **age**: Variable entera positiva que representa la edad del cliente.
+
+- **category**: Variable de tipo cadena que indica la categoría del producto adquirido.
+
+- **quantity**: Cantidad de productos (artículos) comprados por transacción. Variable numérica.
+
+- **price**: Precio unitario. Variable numérica que indica el precio por unidad del producto en liras turcas (TL).
+
+- **payment_method**: Variable de tipo cadena que describe el método de pago utilizado en la transacción (efectivo, tarjeta de crédito o tarjeta de débito).
+
+- **invoice_date**: Fecha de la factura. Corresponde al día en que se generó la transacción.
+
+- **shopping_mall**: Variable de tipo cadena que indica el nombre del centro comercial donde se realizó la transacción.
+
+
+
+</br></br>
+<h2>Requisitos del informe</h2>
+
+El propósito principal de este conjunto de datos es analizar y comprender las tendencias y patrones de consumo en Estambul. Para alcanzar este objetivo, se deben seguir los siguientes pasos:
+
+
+### Paso 1: Construcción de una tabla descriptiva
+Crear una tabla que contenga las siguientes columnas:
+
+1. Nombre de la variable.
+
+2. Breve descripción de la variable.
+
+3. Clasificación según su naturaleza.
+
+4. Clasificación según su origen.
+
+### Paso 2: Identificación y eliminación de duplicados
+Identificar registros duplicados en la base de datos y eliminarlos. Posteriormente, presentar un resumen con los resultados obtenidos por variable.
+
+### Paso 3: Detección de valores atípicos o inconsistencias
+Identificar valores atípicos e inconsistencias para cada variable. Generar una tabla con:
+
+1. El número de valores atípicos o inconsistentes por variable.
+
+2. Los valores detectados como atípicos o inconsistentes. 
+Complementar esta información con gráficos adecuados y una tabla con indicadores de tendencia central, posición y variabilidad.
+
+### Paso 4: Manejo de valores atípicos
+Tomar decisiones sobre cómo tratar los valores atípicos o inconsistentes. Documentar las razones de las decisiones adoptadas y presentar una tabla comparativa con los datos antes y después del tratamiento. Incluir gráficos que ilustren el impacto de las decisiones tomadas, junto con indicadores descriptivos actualizados.
+
+### Paso 5: Análisis de datos faltantes
+Calcular el porcentaje de datos faltantes por variable. Presentar los resultados mediante al menos dos gráficos que destaquen las variables afectadas y el porcentaje de datos faltantes correspondiente.
+
+### Paso 6: Test de hipótesis para datos faltantes
+Implementar un test de hipótesis para determinar si el mecanismo de generación de datos faltantes es MCAR (Missing Completely at Random). Explicar los resultados obtenidos.
+
+### Paso 7: Imputación de datos faltantes
+Aplicar técnicas de imputación para los datos faltantes, justificando las decisiones adoptadas en cada caso. Complementar con gráficos que ilustren el resultado de las imputaciones realizadas.
+
+### Paso 8: Análisis descriptivo post-procesamiento
+Realizar un análisis descriptivo de las variables después de la limpieza, tratamiento de valores atípicos e imputación de datos faltantes. Incluir:
+
+1. Gráficos adecuados para cada variable.
+
+2. Indicadores estadísticos relevantes.  
+
+3. Evaluar posibles análisis bivariados que sean pertinentes en el contexto del conjunto de datos.
+
+### Paso 9: Selección de resultados para el informe
+Seleccionar gráficos e indicadores clave que resuman los hallazgos obtenidos durante el análisis. Estos resultados serán utilizados en el informe final.
+
+### Paso 10: Explicación de patrones y tendencias
+Elaborar un análisis final que explique los patrones y tendencias de consumo en Estambul con base en los datos procesados.
+
+
+
+</br></br>
+<h2>Requisitos de la entrega del informe</h2>
+
+### 1. Entrega en plataforma
+La actividad debe ser entregada a través de la plataforma **Bspace** antes de la fecha límite establecida.
+
+### 2. Formato de entrega
+Se debe cargar en la plataforma un proyecto desarrollado en el software **R**, el cual deberá presentarse en un archivo comprimido en formato **.zip**.
+
+### 3. Contenido del archivo comprimido
+La carpeta comprimida debe incluir los siguientes elementos: 
+
+- El archivo en formato **Excel** que contiene los datos utilizados.  
+- La carpeta del proyecto en R, la cual incluye el archivo **.Rproj** generado al crear el proyecto. 
+
+- El archivo **.Rmd** que documenta cada uno de los pasos solicitados en el análisis.  
+
+- El archivo en formato **HTML** generado al renderizar el archivo **.Rmd**.  
+
+Es imprescindible que el archivo **.Rmd** se renderice correctamente antes de su entrega.
+
+### 4. Presentación de gráficos y tablas
+- Todos los gráficos y tablas deben estar **enumerados**. 
+
+- Cada gráfico y tabla presentada en el informe debe ser **interpretada** con claridad y precisión.  
+
+### 5. Legibilidad de gráficos
+- Los gráficos deben incluir títulos en los ejes **X** e **Y**, los cuales deben ser claros y legibles.  
+
+- En caso de incluir leyendas, estas también deben ser legibles.  
+
+### 6. Referencias dentro del texto
+Las tablas y gráficos deben ser **referenciados en el texto** utilizando la numeración correspondiente.
+
+### 7. Criterios de evaluación
+La evaluación del informe se basará en los siguientes aspectos: 
+
+- Cumplimiento de todos los pasos solicitados en el análisis. 
+
+- Claridad en las explicaciones de cada paso realizado.
+
+- Precisión en las interpretaciones de los análisis. 
+
+- Calidad en la presentación de gráficos y tablas. 
+
+- Adecuación al formato especificado para la entrega. 
+
+- Cumplimiento integral de los requerimientos establecidos para el informe.
+

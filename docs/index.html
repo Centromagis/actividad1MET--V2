@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Métodos y Simulación Estadística" />
+
+
+<title> Análisis de la Cesta de la Compra en Datos del Comercio Minorista</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Métodos y Simulación Estadística</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore"><span style="color:#686868">
+<strong>Análisis de la Cesta de la Compra en Datos del Comercio
+Minorista</strong></span></h1>
+<h4 class="author">Métodos y Simulación Estadística</h4>
+
+</div>
+
+
+</br></br>
+<h2>
+Base de datos
+</h2>
+<p>La base de datos reúne información seleccionada aleatoriamente sobre
+actividades de compra en 10 centros comerciales distintos durante el
+período comprendido entre 2021 y 2023. Los datos corresponden a diversos
+grupos etarios y géneros, con el objetivo de ofrecer una visión integral
+sobre los hábitos de consumo en Estambul. </br></p>
+<p>El conjunto de datos incluye información clave, como números de
+factura, identificadores de clientes, edades, géneros, métodos de pago,
+categorías de productos, cantidades, precios, fechas de compra y
+ubicaciones de los centros comerciales.</p>
+</br>
+<h3>
+Información sobre las variables
+</h3>
+<ul>
+<li><p><strong>invoice_no</strong>: Número de factura. Variable nominal.
+Es una combinación de la letra ‘I’ y un número entero de 6 dígitos
+asignado de manera única a cada operación.</p></li>
+<li><p><strong>customer_id</strong>: Número de cliente. Variable
+nominal. Es una combinación de la letra ‘C’ y un número entero de 6
+dígitos asignado de manera única a cada operación.</p></li>
+<li><p><strong>gender</strong>: Variable de tipo cadena que indica el
+género del cliente.</p></li>
+<li><p><strong>age</strong>: Variable entera positiva que representa la
+edad del cliente.</p></li>
+<li><p><strong>category</strong>: Variable de tipo cadena que indica la
+categoría del producto adquirido.</p></li>
+<li><p><strong>quantity</strong>: Cantidad de productos (artículos)
+comprados por transacción. Variable numérica.</p></li>
+<li><p><strong>price</strong>: Precio unitario. Variable numérica que
+indica el precio por unidad del producto en liras turcas (TL).</p></li>
+<li><p><strong>payment_method</strong>: Variable de tipo cadena que
+describe el método de pago utilizado en la transacción (efectivo,
+tarjeta de crédito o tarjeta de débito).</p></li>
+<li><p><strong>invoice_date</strong>: Fecha de la factura. Corresponde
+al día en que se generó la transacción.</p></li>
+<li><p><strong>shopping_mall</strong>: Variable de tipo cadena que
+indica el nombre del centro comercial donde se realizó la
+transacción.</p></li>
+</ul>
+</br></br>
+<h2>
+Requisitos del informe
+</h2>
+<p>El propósito principal de este conjunto de datos es analizar y
+comprender las tendencias y patrones de consumo en Estambul. Para
+alcanzar este objetivo, se deben seguir los siguientes pasos:</p>
+<div id="paso-1-construcción-de-una-tabla-descriptiva"
+class="section level3">
+<h3>Paso 1: Construcción de una tabla descriptiva</h3>
+<p>Crear una tabla que contenga las siguientes columnas:</p>
+<ol style="list-style-type: decimal">
+<li><p>Nombre de la variable.</p></li>
+<li><p>Breve descripción de la variable.</p></li>
+<li><p>Clasificación según su naturaleza.</p></li>
+<li><p>Clasificación según su origen.</p></li>
+</ol>
+</div>
+<div id="paso-2-identificación-y-eliminación-de-duplicados"
+class="section level3">
+<h3>Paso 2: Identificación y eliminación de duplicados</h3>
+<p>Identificar registros duplicados en la base de datos y eliminarlos.
+Posteriormente, presentar un resumen con los resultados obtenidos por
+variable.</p>
+</div>
+<div id="paso-3-detección-de-valores-atípicos-o-inconsistencias"
+class="section level3">
+<h3>Paso 3: Detección de valores atípicos o inconsistencias</h3>
+<p>Identificar valores atípicos e inconsistencias para cada variable.
+Generar una tabla con:</p>
+<ol style="list-style-type: decimal">
+<li><p>El número de valores atípicos o inconsistentes por
+variable.</p></li>
+<li><p>Los valores detectados como atípicos o inconsistentes.
+Complementar esta información con gráficos adecuados y una tabla con
+indicadores de tendencia central, posición y variabilidad.</p></li>
+</ol>
+</div>
+<div id="paso-4-manejo-de-valores-atípicos" class="section level3">
+<h3>Paso 4: Manejo de valores atípicos</h3>
+<p>Tomar decisiones sobre cómo tratar los valores atípicos o
+inconsistentes. Documentar las razones de las decisiones adoptadas y
+presentar una tabla comparativa con los datos antes y después del
+tratamiento. Incluir gráficos que ilustren el impacto de las decisiones
+tomadas, junto con indicadores descriptivos actualizados.</p>
+</div>
+<div id="paso-5-análisis-de-datos-faltantes" class="section level3">
+<h3>Paso 5: Análisis de datos faltantes</h3>
+<p>Calcular el porcentaje de datos faltantes por variable. Presentar los
+resultados mediante al menos dos gráficos que destaquen las variables
+afectadas y el porcentaje de datos faltantes correspondiente.</p>
+</div>
+<div id="paso-6-test-de-hipótesis-para-datos-faltantes"
+class="section level3">
+<h3>Paso 6: Test de hipótesis para datos faltantes</h3>
+<p>Implementar un test de hipótesis para determinar si el mecanismo de
+generación de datos faltantes es MCAR (Missing Completely at Random).
+Explicar los resultados obtenidos.</p>
+</div>
+<div id="paso-7-imputación-de-datos-faltantes" class="section level3">
+<h3>Paso 7: Imputación de datos faltantes</h3>
+<p>Aplicar técnicas de imputación para los datos faltantes, justificando
+las decisiones adoptadas en cada caso. Complementar con gráficos que
+ilustren el resultado de las imputaciones realizadas.</p>
+</div>
+<div id="paso-8-análisis-descriptivo-post-procesamiento"
+class="section level3">
+<h3>Paso 8: Análisis descriptivo post-procesamiento</h3>
+<p>Realizar un análisis descriptivo de las variables después de la
+limpieza, tratamiento de valores atípicos e imputación de datos
+faltantes. Incluir:</p>
+<ol style="list-style-type: decimal">
+<li><p>Gráficos adecuados para cada variable.</p></li>
+<li><p>Indicadores estadísticos relevantes.</p></li>
+<li><p>Evaluar posibles análisis bivariados que sean pertinentes en el
+contexto del conjunto de datos.</p></li>
+</ol>
+</div>
+<div id="paso-9-selección-de-resultados-para-el-informe"
+class="section level3">
+<h3>Paso 9: Selección de resultados para el informe</h3>
+<p>Seleccionar gráficos e indicadores clave que resuman los hallazgos
+obtenidos durante el análisis. Estos resultados serán utilizados en el
+informe final.</p>
+</div>
+<div id="paso-10-explicación-de-patrones-y-tendencias"
+class="section level3">
+<h3>Paso 10: Explicación de patrones y tendencias</h3>
+<p>Elaborar un análisis final que explique los patrones y tendencias de
+consumo en Estambul con base en los datos procesados.</p>
+</br></br>
+<h2>
+Requisitos de la entrega del informe
+</h2>
+</div>
+<div id="entrega-en-plataforma" class="section level3">
+<h3>1. Entrega en plataforma</h3>
+<p>La actividad debe ser entregada a través de la plataforma
+<strong>Bspace</strong> antes de la fecha límite establecida.</p>
+</div>
+<div id="formato-de-entrega" class="section level3">
+<h3>2. Formato de entrega</h3>
+<p>Se debe cargar en la plataforma un proyecto desarrollado en el
+software <strong>R</strong>, el cual deberá presentarse en un archivo
+comprimido en formato <strong>.zip</strong>.</p>
+</div>
+<div id="contenido-del-archivo-comprimido" class="section level3">
+<h3>3. Contenido del archivo comprimido</h3>
+<p>La carpeta comprimida debe incluir los siguientes elementos:</p>
+<ul>
+<li><p>El archivo en formato <strong>Excel</strong> que contiene los
+datos utilizados.<br />
+</p></li>
+<li><p>La carpeta del proyecto en R, la cual incluye el archivo
+<strong>.Rproj</strong> generado al crear el proyecto.</p></li>
+<li><p>El archivo <strong>.Rmd</strong> que documenta cada uno de los
+pasos solicitados en el análisis.</p></li>
+<li><p>El archivo en formato <strong>HTML</strong> generado al
+renderizar el archivo <strong>.Rmd</strong>.</p></li>
+</ul>
+<p>Es imprescindible que el archivo <strong>.Rmd</strong> se renderice
+correctamente antes de su entrega.</p>
+</div>
+<div id="presentación-de-gráficos-y-tablas" class="section level3">
+<h3>4. Presentación de gráficos y tablas</h3>
+<ul>
+<li><p>Todos los gráficos y tablas deben estar
+<strong>enumerados</strong>.</p></li>
+<li><p>Cada gráfico y tabla presentada en el informe debe ser
+<strong>interpretada</strong> con claridad y precisión.</p></li>
+</ul>
+</div>
+<div id="legibilidad-de-gráficos" class="section level3">
+<h3>5. Legibilidad de gráficos</h3>
+<ul>
+<li><p>Los gráficos deben incluir títulos en los ejes <strong>X</strong>
+e <strong>Y</strong>, los cuales deben ser claros y legibles.</p></li>
+<li><p>En caso de incluir leyendas, estas también deben ser
+legibles.</p></li>
+</ul>
+</div>
+<div id="referencias-dentro-del-texto" class="section level3">
+<h3>6. Referencias dentro del texto</h3>
+<p>Las tablas y gráficos deben ser <strong>referenciados en el
+texto</strong> utilizando la numeración correspondiente.</p>
+</div>
+<div id="criterios-de-evaluación" class="section level3">
+<h3>7. Criterios de evaluación</h3>
+<p>La evaluación del informe se basará en los siguientes aspectos:</p>
+<ul>
+<li><p>Cumplimiento de todos los pasos solicitados en el
+análisis.</p></li>
+<li><p>Claridad en las explicaciones de cada paso realizado.</p></li>
+<li><p>Precisión en las interpretaciones de los análisis.</p></li>
+<li><p>Calidad en la presentación de gráficos y tablas.</p></li>
+<li><p>Adecuación al formato especificado para la entrega.</p></li>
+<li><p>Cumplimiento integral de los requerimientos establecidos para el
+informe.</p></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
