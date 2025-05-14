@@ -1,5 +1,5 @@
 ---
-title: <span style="color:#686868"> **Análisis de la Cesta de la Compra en  Datos del Comercio Minorista**</span>
+title: <span style="color:#686868"> **Informe estadístico de un caso de estudio**</span>
 author: "Métodos y Simulación Estadística"
 output:
   html_document:
@@ -14,142 +14,232 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-</br></br>
-<h2>Base de datos</h2>
 
-La base de datos reúne información seleccionada aleatoriamente sobre actividades de compra en 10 centros comerciales distintos durante el período comprendido entre 2021 y 2023. Los datos corresponden a diversos grupos etarios y géneros, con el objetivo de ofrecer una visión integral sobre los hábitos de consumo en Estambul.
-</br>
-
-El conjunto de datos incluye información clave, como números de factura, identificadores de clientes, edades, géneros, métodos de pago, categorías de productos, cantidades, precios, fechas de compra y ubicaciones de los centros comerciales.
-
-</br>
-<h3>Información sobre las variables</h3>
-
-- **invoice_no**: Número de factura. Variable nominal. Es una combinación de la letra 'I' y un número entero de 6 dígitos asignado de manera única a cada operación.
-
-- **customer_id**: Número de cliente. Variable nominal. Es una combinación de la letra 'C' y un número entero de 6 dígitos asignado de manera única a cada operación.
-
-- **gender**: Variable de tipo cadena que indica el género del cliente.
-
-- **age**: Variable entera positiva que representa la edad del cliente.
-
-- **category**: Variable de tipo cadena que indica la categoría del producto adquirido.
-
-- **quantity**: Cantidad de productos (artículos) comprados por transacción. Variable numérica.
-
-- **price**: Precio unitario. Variable numérica que indica el precio por unidad del producto en liras turcas (TL).
-
-- **payment_method**: Variable de tipo cadena que describe el método de pago utilizado en la transacción (efectivo, tarjeta de crédito o tarjeta de débito).
-
-- **invoice_date**: Fecha de la factura. Corresponde al día en que se generó la transacción.
-
-- **shopping_mall**: Variable de tipo cadena que indica el nombre del centro comercial donde se realizó la transacción.
-
-La **base de datos** se puede descargar desde la **Actividad 1**, la cual encontrarás al hacer clic en la pestaña de *Actividades* en la plataforma Brightspace. Allí también podrás acceder a la rúbrica de evaluación de la actividad mencionada.
+```{r, echo=FALSE, out.width="100%", fig.align = "center"}
+knitr::include_graphics("img/banner2.png")
+```
 
 </br></br>
-<h2>Requisitos del informe</h2>
 
-El propósito principal de este conjunto de datos es analizar y comprender las tendencias y patrones de consumo en Estambul. Para alcanzar este objetivo, se deben seguir los siguientes pasos:
+La limpieza de datos, la imputación de datos faltantes, el análisis de valores atípicos y el procesamiento de datos mediante tablas y gráficos constituyen etapas fundamentales para garantizar la calidad y legitimidad de la base de datos antes de aplicar técnicas de modelación. Estas actividades también permiten comprender las relaciones entre las variables y explorar la estructura subyacente de los datos, proporcionando una base sólida para el posterior ajuste de modelos o la implementación de herramientas estadísticas más elaboradas.
 
 
-### Paso 1: Construcción de una tabla descriptiva
-Crear una tabla que contenga las siguientes columnas:
+</br></br>
+<h2>Contexto del problema</h2>
+La segmentación de clientes es una técnica que consiste en dividir la base de datos de clientes en grupos diferenciados según características comunes, comportamientos de compra o atributos demográficos. Esta estrategia permite comprender con mayor profundidad las necesidades de los distintos perfiles de clientes y orientar los mensajes de manera más efectiva hacia el público adecuado.
 
-1. Nombre de la variable.
+En este contexto, el objetivo de la empresa es desarrollar un modelo predictivo que maximice la rentabilidad de la próxima campaña de marketing directo, programada para el mes siguiente. Esta sexta campaña tiene como propósito la comercialización de un nuevo dispositivo entre los clientes existentes. Para construir el modelo, se implementó una campaña piloto en la que se seleccionó aleatoriamente un subconjunto de clientes, quienes fueron contactados por vía telefónica para ofrecerles el producto. Durante los meses posteriores, se registró de manera precisa cuáles clientes aceptaron la oferta.
 
-2. Breve descripción de la variable.
+Previo al proceso de modelación, el objetivo de la empresa es analizar, diferenciar e interpretar los rasgos distintivos de los clientes, tanto de aquellos que mostraron disposición a adquirir el dispositivo como de quienes no lo hicieron.
 
-3. Clasificación según su naturaleza.
+La base de datos de la muestra piloto se encuentra disponible en el siguiente enlace:
 
-4. Clasificación según su origen.
+https://github.com/Centromagis/metodosySIM3_V2/blob/main/datos_MetySim/data_actividad1.xlsx
 
-### Paso 2: Identificación y eliminación de duplicados
-Identificar registros duplicados en la base de datos y eliminarlos. Posteriormente, presentar un resumen con los resultados obtenidos por variable.
+A continuación, se presenta una tabla con las variables incluidas en la muestra piloto, acompañadas de su respectiva descripción.
 
-### Paso 3: Detección de valores atípicos o inconsistencias
-Identificar valores atípicos e inconsistencias para cada variable. Generar una tabla con:
 
-1. El número de valores atípicos o inconsistentes por variable.
-
-2. Los valores detectados como atípicos o inconsistentes. 
-Complementar esta información con gráficos adecuados y una tabla con indicadores de tendencia central, posición y variabilidad.
-
-### Paso 4: Manejo de valores atípicos
-Tomar decisiones sobre cómo tratar los valores atípicos o inconsistentes. Documentar las razones de las decisiones adoptadas y presentar una tabla comparativa con los datos antes y después del tratamiento. Incluir gráficos que ilustren el impacto de las decisiones tomadas, junto con indicadores descriptivos actualizados.
-
-### Paso 5: Análisis de datos faltantes
-Calcular el porcentaje de datos faltantes por variable. Presentar los resultados mediante al menos dos gráficos que destaquen las variables afectadas y el porcentaje de datos faltantes correspondiente.
-
-### Paso 6: Test de hipótesis para datos faltantes
-Implementar un test de hipótesis para determinar si el mecanismo de generación de datos faltantes es MCAR (Missing Completely at Random). Explicar los resultados obtenidos.
-
-### Paso 7: Imputación de datos faltantes
-Aplicar técnicas de imputación para los datos faltantes, justificando las decisiones adoptadas en cada caso. Complementar con gráficos que ilustren el resultado de las imputaciones realizadas.
-
-### Paso 8: Análisis descriptivo post-procesamiento
-Realizar un análisis descriptivo de las variables después de la limpieza, tratamiento de valores atípicos e imputación de datos faltantes. Incluir:
-
-1. Gráficos adecuados para cada variable.
-
-2. Indicadores estadísticos relevantes.  
-
-3. Evaluar posibles análisis bivariados que sean pertinentes en el contexto del conjunto de datos.
-
-### Paso 9: Selección de resultados para el informe
-Seleccionar gráficos e indicadores clave que resuman los hallazgos obtenidos durante el análisis. Estos resultados serán utilizados en el informe final.
-
-### Paso 10: Explicación de patrones y tendencias
-Elaborar un análisis final que explique los patrones y tendencias de consumo en Estambul con base en los datos procesados.
+| **Variable**              | **Descripción**                                                  |
+|--------------------------|------------------------------------------------------------------|
+| AcceptedCmp1             | 1 if customer accepted the offer in the 1st campaign, 0 otherwise |
+| AcceptedCmp2             | 1 if customer accepted the offer in the 2nd campaign, 0 otherwise |
+| AcceptedCmp3             | 1 if customer accepted the offer in the 3rd campaign, 0 otherwise |
+| AcceptedCmp4             | 1 if customer accepted the offer in the 4th campaign, 0 otherwise |
+| AcceptedCmp5             | 1 if customer accepted the offer in the 5th campaign, 0 otherwise |
+| AcceptedCmpOverall       | Overall number of accepted campaigns                            |
+| Response                 | 1 if customer accepted the offer in the last campaign, 0 otherwise |
+| Complain                 | 1 if customer complained in the last 2 years                    |
+| DtCustomer               | Date of customer’s enrolment with the company                   |
+| Customer_Days            | Number of days since registration as a customer                 |
+| Education                | Customer’s level of education                                   |
+| education_2n Cycle       | Customer has secondary education                                |
+| education_Basic          | Customer has basic education                                    |
+| education_Graduation     | Customer has a bachelor degree                                  |
+| education_Master         | Customer has a masters degree                                   |
+| education_PhD            | Customer has a PhD                                              |
+| Marital                  | Customer’s marital status                                       |
+| marital_Divorced         | 1 if customer is divorced, 0 otherwise                          |
+| marital_Married          | 1 if customer is married, 0 otherwise                           |
+| marital_Single           | 1 if customer is single, 0 otherwise                            |
+| marital_Together         | 1 if customer is in relationship, 0 otherwise                   |
+| marital_Widow            | 1 if customer is a widow/widower, 0 otherwise                   |
+| Kidhome                  | Number of small children in customer’s household                |
+| Teenhome                 | Number of teenagers in customer’s household                     |
+| Income                   | Customer’s yearly household income                              |
+| MntFishProducts          | Amount spent on fish products in the last 2 years               |
+| MntMeatProducts          | Amount spent on meat products in the last 2 years               |
+| MntFruits                | Amount spent on fruit products in the last 2 years              |
+| MntSweetProducts         | Amount spent on sweet products in the last 2 years              |
+| MntWines                 | Amount spent on wine products in the last 2 years               |
+| MntGoldProds             | Amount spent on gold products in the last 2 years               |
+| NumDealsPurchases        | Number of purchases made with discount                          |
+| NumCatalogPurchases      | Number of purchases made using catalogue                        |
+| NumStorePurchases        | Number of purchases made directly in stores                     |
+| NumWebPurchases          | Number of purchases made through company’s website              |
+| NumWebVisitsMonth        | Number of visits to company’s website in the last month         |
+| Recency                  | Number of days since the last purchase                          |
+| Age                      | Age of customer                                                 |
+| MntTotal                 | Total amount spent on all the products                          |
+| MntRegularProds          | Total amount spent on regular products                          |
 
 
 
 </br></br>
-<h2>Requisitos de la entrega del informe</h2>
+<h3>Actividad</h3> 
+Se requiere la elaboración de un informe estadístico completo que contemple la formulación de objetivos específicos alineados con el objetivo general, así como la ejecución rigurosa de un proceso de limpieza de datos, el análisis e identificación de valores atípicos y datos faltantes, su correspondiente tratamiento e imputación, y el análisis de los resultados posteriores a estas etapas, con el propósito de describir de manera precisa las características de los clientes y cumplir con los objetivos propuestos. Los resultados deben presentarse de forma clara y fundamentada, acompañados de tablas con indicadores estadísticos y gráficos que respalden las interpretaciones y conclusiones. Cada afirmación debe estar sustentada con resultados numéricos concretos, evitando expresiones vagas como "la mayoría de los clientes cumple..." sin especificar el porcentaje correspondiente. Asimismo, no se deben presentar listas de estadísticas sin análisis, tales como “la mediana es 300, la media es 290, los cuartiles son 100, 300 y 500”, ya que dichos valores por sí solos no constituyen una interpretación. En su lugar, se debe ofrecer una interpretación de los indicadores en función del contexto del problema.
 
-### 1. Entrega en plataforma
-La actividad debe ser entregada a través de la plataforma **Bspace** antes de la fecha límite establecida.
 
-### 2. Formato de entrega
-Se debe cargar en la plataforma un proyecto desarrollado en el software **R**, el cual deberá presentarse en un archivo comprimido en formato **.zip**.
+---
 
-### 3. Contenido del archivo comprimido
-La carpeta comprimida debe incluir los siguientes elementos: 
+</br></br>
+<h3>Requisitos del informe</h3>
 
-- El archivo en formato **Excel** que contiene los datos utilizados.  
-- La carpeta del proyecto en R, la cual incluye el archivo **.Rproj** generado al crear el proyecto. 
+El informe debe reportar lo siguiente:
 
-- El archivo **.Rmd** que documenta cada uno de los pasos solicitados en el análisis.  
+1. Proposición de objetivos específicos: Redactar al menos 3 objetivos específicos para alcanzar el objetivo general.
 
-- El archivo en formato **HTML** generado al renderizar el archivo **.Rmd**.  
+2. Construcción de una tabla descriptiva: La tabla debe contener las siguientes columnas:
 
-Es imprescindible que el archivo **.Rmd** se renderice correctamente antes de su entrega.
+    - Nombre de la variable.
 
-### 4. Presentación de gráficos y tablas
-- Todos los gráficos y tablas deben estar **enumerados**. 
+    - Breve descripción de la variable. 
 
-- Cada gráfico y tabla presentada en el informe debe ser **interpretada** con claridad y precisión.  
+    - Clasificación según su naturaleza.
 
-### 5. Legibilidad de gráficos
-- Los gráficos deben incluir títulos en los ejes **X** e **Y**, los cuales deben ser claros y legibles.  
+3. Identificación y eliminación de duplicados: Identificar registros duplicados en la base de datos y eliminarlos. Reportar lo realizado.
 
-- En caso de incluir leyendas, estas también deben ser legibles.  
+4. Detección de valores atípicos o inconsistencias:  Identificar valores atípicos e inconsistencias para cada variable. Generar una tabla con:
 
-### 6. Referencias dentro del texto
-Las tablas y gráficos deben ser **referenciados en el texto** utilizando la numeración correspondiente.
+    - El número de valores atípicos o inconsistentes por variable.
 
-### 7. Criterios de evaluación
-La evaluación del informe se basará en los siguientes aspectos: 
+    - Los valores detectados como atípicos o inconsistentes. Complementar esta información con gráficos adecuados y una tabla con indicadores de tendencia central, posición y variabilidad.
 
-- Cumplimiento de todos los pasos solicitados en el análisis. 
 
-- Claridad en las explicaciones de cada paso realizado.
+5. Manejo de valores atípicos: Tomar decisiones sobre cómo tratar los valores atípicos o inconsistentes. Documentar las razones de las decisiones adoptadas y presentar una tabla comparativa con los datos antes y después del tratamiento. Incluir gráficos que ilustren el impacto de las decisiones tomadas, junto con indicadores descriptivos actualizados.
 
-- Precisión en las interpretaciones de los análisis. 
+6. Análisis de datos faltantes:  Calcular el porcentaje de datos faltantes por variable. Presentar los resultados mediante al menos dos gráficos que destaquen las variables afectadas y el porcentaje de datos faltantes correspondiente.
 
-- Calidad en la presentación de gráficos y tablas. 
+7. Determinación de tipo de datos faltantes: Realizar gráficos y pruebas estadísticas para determinar si el mecanismo de generación de datos faltantes es MCAR (Missing Completely at Random) u otro. Explicar los resultados obtenidos.
 
-- Adecuación al formato especificado para la entrega. 
+8. Imputación de datos faltantes: Aplicar técnicas de imputación para los datos faltantes, justificando las decisiones adoptadas en cada caso. Complementar con gráficos que ilustren el resultado de las imputaciones realizadas.
 
-- Cumplimiento integral de los requerimientos establecidos para el informe.
+9. Análisis descriptivo post-procesamiento: Realizar un análisis descriptivo de las variables después de la limpieza, tratamiento de valores atípicos e imputación de datos faltantes. Incluir:
+
+    - Gráficos adecuados para cada variable.
+
+    - Indicadores estadísticos relevantes.  
+
+    - Evaluar posibles análisis bivariados que sean pertinentes en el contexto del conjunto de datos.
+
+10. Selección de resultados para el informe: Seleccionar gráficos e indicadores clave que resuman los hallazgos obtenidos durante el análisis. Estos resultados serán utilizados en la discusión de resultados.
+
+11. Discusión de resultados: Elaborar un análisis final que describa los resultados en relación con los objetivos planteados que den cuenta del objetivo general del informe.
+
+12. Organización del informe: El informe debe estar compuesto por las siguientes secciones:
+
+    - Descripción
+    
+    - Objetivos
+    
+      - Objetivo general
+      
+      - Objetivo específicos
+      
+    - Datos
+    
+    - Procesamiento
+    
+      - Errores e inconsistencias
+      
+      - Análisis de datos atípicos
+      
+      -  Identificación de datos faltantes
+      
+      -  Imputación de datos faltantes
+      
+    - Resultados y discusión
+    
+    - Conclusiones
+    
+    - Referencias
+    
+    - Anexos
+
+
+---
+
+</br></br>
+<h3>Condiciones de entrega</h3>
+
+1. La actividad debe resolverse individualmente. 
+
+2. Entrega en plataforma: La actividad debe ser entregada a través de la plataforma **Bspace** antes de la fecha límite establecida.
+
+3. Formato de entrega: Se debe cargar en la plataforma un proyecto desarrollado en el software **R**, el cual deberá presentarse en un archivo comprimido en formato **.zip**.
+
+4. Contenido del archivo comprimido **.zip**:
+
+    - El archivo de los datos utilizados. 
+      
+    - El archivo **.Rproj** generado al crear el proyecto de **R**. 
+      
+    - Los archivos **.Rmd** que documenta cada uno de los pasos solicitados en el análisis.  
+      
+    - Los archivos  en formato **HTML** generado al renderizar el archivo **.Rmd**.  
+      
+    - Es imprescindible que los archivos **.Rmd** se renderice correctamente antes de su entrega.
+
+5. Presentación de gráficos y tablas:
+
+    - Todos los gráficos y tablas deben estar **enumerados**. 
+      
+    - Cada gráfico y tabla presentada en el informe debe ser **interpretada** con claridad y precisión.  
+
+6. Legibilidad de gráficos:
+
+    - Los gráficos deben incluir títulos en los ejes X e Y, los cuales deben ser claros y legibles.  
+      
+    - En caso de incluir leyendas, estas también deben ser legibles.  
+
+7. Referencias dentro del texto: Las tablas y gráficos deben ser referenciados en el texto utilizando la numeración correspondiente.
+
+8. El informe con el reporte debe tener una extensión máxima de 5,000 palabras. Además, debe incluir una sección de Anexos que contenga los códigos comentados correspondientes a todo el procesamiento de datos realizado para el desarrollo de la actividad. También se debe incluir una sección de Referencias bibliográficas. Las palabras incluidas en los Anexos y en las Referencias no se contabilizan dentro del límite de las 5,000 palabras. 
+
+9. Criterios de evaluación. La evaluación de la actividad se basará en los siguientes aspectos: 
+
+    - Cumplimiento integral y correcto de los requerimientos establecidos para el informe.  
+      
+    - Aplicación correcta de los conocimientos estadísticos.
+      
+    - Claridad en las explicaciones de cada paso realizado.
+      
+    - Precisión en las interpretaciones de los análisis. 
+      
+    - Calidad en la presentación de gráficos y tablas. 
+      
+    - Adecuación al formato especificado para la entrega. 
+    
+
+
+---
+
+</br></br>
+<h3>Rúbrica de evaluación</h3>
+
+| **Criterio** | **Muy alto (30 pts)** | **Alto (25 pts)** | **Medio (20 pts)** | **Bajo (15 pts)** | **Muy bajo (10 pts)** |
+|:-------------|:----------------------|:------------------|:-------------------|:------------------|:----------------------|
+| **1. Construcción de la tabla descriptiva** | La tabla es completa, clara y bien organizada. Todas las variables están correctamente clasificadas y descritas. | La tabla está casi completa, con algunas descripciones o clasificaciones menores sin detallar. | La tabla incluye varias descripciones o clasificaciones inexactas o incompletas. | La tabla está incompleta o contiene errores importantes en las clasificaciones. | La tabla está ausente o es incorrecta. |
+| **2. Identificación y eliminación de duplicados** | Identificación y eliminación completa de duplicados, con resumen claro y correcto de los resultados. | Identificación y eliminación de duplicados correcta, pero el resumen es incompleto o algo confuso. | Se identifican algunos duplicados, pero el proceso no es completo o el resumen es limitado. | El análisis de duplicados no es completo o el resumen es poco claro. | No se identificaron ni eliminaron duplicados. |
+| **3. Detección de valores atípicos** | Los valores atípicos son detectados correctamente. Se presentan gráficos y tablas claras. El análisis es adecuado y bien interpretado. | La detección es casi completa y los gráficos son relevantes, pero el análisis es parcial o poco detallado. | Algunos valores atípicos son detectados, pero faltan detalles importantes en los gráficos o el análisis. | La detección es incompleta o los gráficos no son apropiados. | No se detectaron valores atípicos o el análisis es incorrecto. |
+| **4. Manejo de valores atípicos** | El manejo de los valores atípicos está bien justificado. Se presentan comparaciones claras y gráficos explicativos. | Manejo adecuado de los valores atípicos, aunque con algunas justificaciones incompletas o gráficos poco claros. | Manejo superficial de los valores atípicos, con poca justificación y gráficos confusos. | Manejo inadecuado o sin justificación clara. Los gráficos no son útiles. | No se manejaron los valores atípicos. |
+| **5. Análisis de datos faltantes** | El análisis es exhaustivo. Se calculan los porcentajes de datos faltantes correctamente y se presentan gráficos bien elaborados. | El análisis es adecuado, pero los gráficos no son del todo claros o falta algún detalle menor. | El análisis es básico o los gráficos no son claros. Faltan algunos detalles importantes. | Análisis incompleto o con errores en los gráficos. | No se realizó el análisis de datos faltantes. |
+| **6. Análisis del tipo de datos faltantes** | Se realizan gráficos o cálculos para estudiar el patrón de datos faltantes (MCAR, MAR, MNAR). Los resultados se interpretan correctamente. | Se realizan análisis del tipo de datos faltantes, pero la interpretación o los gráficos son poco detallados. | El análisis del tipo de datos faltantes es parcial o la interpretación presenta errores. | El análisis es superficial, con interpretaciones confusas o incorrectas. | No se realizó el análisis del tipo de datos faltantes o se realizó incorrectamente. |
+| **7. Imputación de datos faltantes** | Imputación bien aplicada y justificada. Se presentan gráficos claros que muestran el impacto del proceso. | Imputación correcta, aunque la justificación o los gráficos son incompletos. | Imputación realizada con deficiencias en la justificación y gráficos poco claros o ausentes. | Imputación inadecuada o falta de justificación. Los gráficos son irrelevantes o inexistentes. | No se realizó la imputación de datos faltantes. |
+| **8. Análisis descriptivo post-procesamiento** | El análisis es detallado, con gráficos e indicadores relevantes y bien explicados. | El análisis es adecuado, aunque falta algo de profundidad en gráficos o indicadores. | El análisis es superficial o los gráficos son poco adecuados. | El análisis es incompleto y los gráficos son irrelevantes o confusos. | El análisis no se realizó o es incorrecto. |
+| **9. Explicación de patrones y tendencias** | Explicación completa y detallada de los patrones y tendencias, con análisis bien estructurado. | Explicación clara, pero con algunos detalles faltantes o insuficientemente desarrollada. | Explicación básica, con análisis poco profundo o con algunos errores. | Explicación confusa o con muchos aspectos no analizados correctamente. | No se explica correctamente los patrones o tendencias. |
+| **10. Cumplimiento de requisitos del informe** | Todos los requisitos del informe se cumplen perfectamente, incluyendo entrega en formato correcto, número de palabras, estructura solicitada y tiempos de entrega. | La mayoría de los requisitos se cumplen, con ligeras fallas en el formato o entrega. | Se cumplen solo algunos requisitos, el formato o el contenido presentan deficiencias. | Muchos requisitos no se cumplen, o el formato y entrega son incorrectos. | El informe no cumple con los requisitos establecidos. |
+| **11. Claridad y presentación** | El informe está bien organizado, con explicaciones claras, detalladas y presentación profesional. | El informe es claro, pero podría estar mejor organizado o contener explicaciones más detalladas. | El informe es comprensible, pero con aspectos confusos o desorganizados. | El informe presenta falta de claridad y resulta difícil de seguir. | El informe no es claro ni está bien estructurado. |
+
+
+
 
